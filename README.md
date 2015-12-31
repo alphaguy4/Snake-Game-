@@ -1,4 +1,4 @@
-Classical Snakegame 
+#Classical Snakegame 
 
 Simple game created using javascript , html and jquery
 
