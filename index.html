@@ -1,0 +1,125 @@
+<html>
+<title></title>
+<script type="text/javascript" src="jquery-1.5.2.min.js"></script>
+<head></head>
+<style>
+   h1{
+   	font-size:16px;
+   	 color:orange;
+   }
+  .mycell{
+  width:18px;
+  height:18px; 
+  margin:1px 1px 1px 1px;
+  background:#E89C84;
+  float:left; 
+  }
+  .cell{
+  background:#FFDE00;
+  }
+  .img{
+  background-image:url('apple.png');
+  background-repeat: no-repeat;
+  }
+  p {
+  font-size:18px;
+   color:grey;
+  }
+ </style>
+ <body>
+ <center>
+ <p>Snake Game: Powered By MeraPaisa.com</p>
+ <div id="div_main" style="width:400px;height:400px;margin:0px;padding:0px;border:12px solid black"></div>
+ <hr>
+ <div id="user" ></div> 
+ <div id="score"> </div>
+ </center>
+ <script>
+ var speed = 100;
+ var food = "";
+ var snake = ["3_10","2_10","1_10"];
+ var dir = 1;
+ var count = 0;
+ $("#div_main").html("");
+ function myinit(){
+	dir = 1;
+ 	food = "";
+ 	snake = ["3_10","2_10","1_10"];
+    $("#div_main").html("");
+	for(r = 0;r < 20;r++){
+    for(c = 0;c < 20;c++) {
+ 	$("#div_main").append("<div class=mycell id=c_" + r + "_" + c + "></div>");
+  }
+ }
+ count = 0;
+ $("#c_1_10").addClass("cell");
+ $("#c_2_10").addClass("cell");
+ $("#c_3_10").addClass("cell");
+  generateFood();
+  setTimeout(function(){gameUpdate()},speed);
+  }
+myinit();
+function generateFood(){
+  var r1 = Math.floor(Math.random() * 19);
+  var c1 = Math.floor(Math.random() * 19);
+  $("#c_" + r1 + "_" + c1).addClass("img");
+  food = r1 + "_" + c1;
+  }
+  var userName = prompt("Enter Your Name :");
+  userName = userName.toLowerCase();
+  if(userName == "")
+   userName = "Guest";
+  else
+  if(userName == "kartikay")
+   userName = "Voila , It's Admin";
+ document.getElementById("user").innerHTML="<p>Player : " + userName + "</p>";
+ document.getElementById("score").innerHTML = "<p>Score : " + count + "</p>";
+ function gameUpdate(){
+  var tail = snake.pop();
+  $("#c_" + tail).removeClass("cell");
+  var hh = snake[0];
+  var rc = hh.split("_");
+  var r = parseInt(rc[0]);
+  var c = parseInt(rc[1]);
+  switch(dir){
+  	case 1 : r+=1;break;
+  	case 2 : c-=1;break;
+  	case 3 : r-=1;break;
+  	case 4 : c+=1;break;
+  }
+  var nn = "" + r + "_" + c;
+  if(nn==food){
+  	snake.push(tail);
+  	$("#c_" + tail).addClass("cell");
+  	$("#c_" + food).removeClass("img");
+  	document.getElementById("score").innerHTML = "<p>Score : " + ++count + "</p>";
+ 	generateFood();
+  }
+  snake.unshift(nn);
+  $("#c_" + nn).hasClass("cell");
+  if(c < 0 || r < 0 || c > 19 || r > 19 || $("#c_" + nn).hasClass("cell")){
+  	alert("Final-Score : " + count);
+  	count = 0;
+  	myinit();
+  	document.getElementById("score").innerHTML = "<p>Score : " + count + "</p>";
+  	return;
+  }
+  $("#c_" + nn).addClass("cell");
+  setTimeout(function(){gameUpdate()},speed); 
+ }
+ $(document).keydown(function(e){
+ 	if(e.keyCode == 37)
+ 	dir = 2;
+ 	else
+ 	if(e.keyCode == 38)
+ 	dir = 3;
+ 	else
+ 	if(e.keyCode == 39)
+ 	dir = 4;
+ 	else
+ 	if(e.keyCode == 40)
+ 	dir =1;
+ }); 
+</script>
+</body>
+</html>
